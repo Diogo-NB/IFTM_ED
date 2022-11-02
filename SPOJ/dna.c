@@ -100,8 +100,6 @@ Gene* input(Gene* G,LInfo* I,int N)
         limpar();
         fgets (input, 4, stdin);
 
-        if (input[0] != '\n')
-        {
         G = InserirS(G,input);
 
         c1[0]=input[0];
@@ -111,9 +109,7 @@ Gene* input(Gene* G,LInfo* I,int N)
         
         inserirD(I,c1);
         inserirD(I,c2);
-        }    
-        else
-            i--;
+    
     }
     return G;
 }
@@ -164,7 +160,6 @@ void inserirD(LInfo* L,char c[2])
 
 void InserirNoI(LInfo* L,char c[2])
 {
-
         Info* X = (Info*) malloc(sizeof(Info));
         strcpy(X->base,c);
         X->qtd=1;
