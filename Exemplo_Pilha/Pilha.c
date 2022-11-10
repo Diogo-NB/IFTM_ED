@@ -1,19 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
-#include<string.h>
-#include<math.h>
 
-/*LIFO Last In First Out ou FILO First In Last Out
-
- Criar uma pilha vazia                        P->TOP
- Inserir um elemento no topo da pilha        |_______|
- Remover um elemento do topo de pilha        |_______|
- Consultar  o topo da pilha                  |_______|
- Destruir a pilha                            |_______|
- Verificar se é cheia                        |_______|
- Verificar se é vazia                        |_______|
-                                              P->BOT
-*/
 struct nop{
     int dados;
     struct nop* anterior; 
@@ -30,31 +17,38 @@ Pilha* ciar_pilha();
 
 int push (Pilha* P,int val);
  
-int pop (Pilha* P);
+int pop (Pilha* P); 
 
-int top (Pilha* P);
+int top (Pilha* P); 
 
-int is_empty(Pilha* P);
+int is_empty(Pilha* P); 
 
-void free_Pilha(Pilha* P);
+void free_Pilha(Pilha* P); 
 
-void printP(Pilha* P);
+Pilha* printP(Pilha* P); // print da pilha sem destruir-la (retornando a sua copia)
 
-void main()
-{
-    int n=11;
+Pilha* invertP(Pilha* P);
+
+void main(){
+    int x=-1;
     Pilha* P=ciar_pilha(P);
-    int i;
-    for (i=1;i<n;i++)
-        push(P,i);
 
-    printP(P);
+    /*
+    do
+    {
+        scanf("%d",&x);
+        push(P,x);
+    } while (x!=0);
+    */
+
+    for (x=0;x<11;x++)
+        push(P,x);
+
+    P = printP(P);
     free_Pilha(P);
-    
 }
 
-int push (Pilha* P,int val)
-{
+int push (Pilha* P,int val){
     if (P==NULL)
         return 0;
 
@@ -79,16 +73,17 @@ int pop (Pilha* P){
      if (is_empty(P))
         return -1;  
 
-    No_P* aux = P->top->anterior;
+    No_P* aux = P->top;
+
     if (P->bot==P->top){
-        free(P->bot);
-        free(P);
-        P=ciar_pilha();
-        }
-    
-    No_P* temp = P->top;
-    P->top=aux;
-    free(temp);
+        P->top=NULL;
+        P->bot=NULL;
+        free(aux); 
+        return 1;
+    }
+
+    P->top=P->top->anterior;
+    free(aux);
     return 1;
 }
 
@@ -117,23 +112,47 @@ void free_Pilha(Pilha* P){
     if (P==NULL)
         free(P);
     else{
-
-            while (is_empty(P))
+            while (!is_empty(P))
                 pop(P);
             free(P); 
         }
 }
 
-void printP(Pilha* P){
+Pilha* printP(Pilha* P){
+/*EX 7. função que mostre todos os elementos de p sem desrespeitar as restrições
+e usando apenas uma outra pilha como auxiliar*/
+
+if (P==NULL || is_empty(P)==1)
+    return P;
+
+Pilha* x = ciar_pilha();
+int t;
     while (!is_empty(P))
     {
-        printf("| %d ",top(P));
+        t=top(P);
+        printf("\n%d",t);
+        push(x,t);
         pop(P);
     }
+    free_Pilha(P);
+
+    P=x;
 }
 
+Pilha* invertP(Pilha* P){
+/*EX 8. Função que inverte a ordem dos elementos dessa pilha
+Definir adequadamente a estrutura auxiliar e prever a possibilidade da pilha estar vazia. */
 
+if (is_empty(P)!=0)
+    return P;
 
-
-    
-
+Pilha* x = ciar_pilha();
+int t;
+    while (!is_empty(P))
+    {
+        t=top(P);
+        push(x,t);
+        pop(P);
+    }
+    return x;
+}
