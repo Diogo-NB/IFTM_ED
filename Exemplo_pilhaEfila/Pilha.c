@@ -31,7 +31,7 @@ Pilha* invertP(Pilha* P);
 
 void main(){
     int x=-1;
-    Pilha* P=ciar_pilha(P);
+    Pilha* P=ciar_pilha();
 
     /*
     do
@@ -103,7 +103,7 @@ int is_empty(Pilha* P){
 }
 
 int top(Pilha* P){
-    if(is_empty(P))
+    if(is_empty(P)!=0)
         return -1;
     return P->top->dados;
 }
