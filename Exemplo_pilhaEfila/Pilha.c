@@ -33,16 +33,15 @@ void main(){
     int x=-1;
     Pilha* P=ciar_pilha();
 
-    /*
+    
     do
     {
         scanf("%d",&x);
         push(P,x);
     } while (x!=0);
-    */
 
-    for (x=0;x<11;x++)
-        push(P,x);
+    //for (x=0;x<11;x++)
+        //push(P,x);
 
     P = printP(P);
     free_Pilha(P);
