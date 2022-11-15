@@ -95,7 +95,7 @@ int is_empty(Pilha* P){
 }
 
 int top(Pilha* P){
-    if(is_empty(P))
+    if(is_empty(P)!=0)
         return -1;
     return P->top->dados;
 }
