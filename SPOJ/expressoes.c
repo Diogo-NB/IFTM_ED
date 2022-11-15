@@ -2,7 +2,7 @@
 #include<stdio.h>
 
 struct nop{
-    int dados;
+    char dados;
     struct nop* anterior; 
 };
 typedef struct nop No_P;
@@ -19,25 +19,42 @@ int push (Pilha* P,int val);
  
 int pop (Pilha* P); 
 
-int top (Pilha* P); 
+char top(Pilha* P); 
 
 int is_empty(Pilha* P); 
 
 void free_Pilha(Pilha* P); 
 
-Pilha* printP(Pilha* P); // print da pilha sem destruir-la (retornando a sua copia)
+char cParaFechar(char c);
 
-Pilha* invertP(Pilha* P);
+int verificarExpressao(Pilha* P);
+
+void limpar();
 
 void main(){
-    int x=-1;
-    Pilha* P=ciar_pilha(P);
 
-    for (x=0;x<11;x++)
-        push(P,x);
+    char c;
+    int n;
+    scanf("%d",&n);
+    limpar();
 
-    P = printP(P);
+    for (int i=0; i<n; i++){
+    Pilha* P = ciar_pilha(P);
+
+    if(verificarExpressao(P))
+        printf("S\n");
+    else
+        printf("N\n");
+
     free_Pilha(P);
+    }
+}
+
+void limpar()
+{
+    int leitura;
+    while((leitura = getchar()) != '\n' && leitura != EOF)
+		/*--*/; 
 }
 
 int push (Pilha* P,int val){
@@ -94,9 +111,9 @@ int is_empty(Pilha* P){
     return 0;
 }
 
-int top(Pilha* P){
+char top(Pilha* P){
     if(is_empty(P))
-        return -1;
+        return 0;
     return P->top->dados;
 }
 
@@ -110,41 +127,53 @@ void free_Pilha(Pilha* P){
         }
 }
 
-Pilha* printP(Pilha* P){
-/*EX 7. função que mostre todos os elementos de p sem desrespeitar as restrições
-e usando apenas uma outra pilha como auxiliar*/
+int verificarExpressao(Pilha* P){
 
-if (P==NULL || is_empty(P)==1)
-    return P;
+if (is_empty(P)!=1)
+    return -1; //informar erro
+    
+int res=1;
+char topAux,CAux;
+char c=getchar();
+    
+while (c!='\n'){
 
-Pilha* x = ciar_pilha();
-int t;
-    while (!is_empty(P))
-    {
-        t=top(P);
-        printf("\n%d",t);
-        push(x,t);
-        pop(P);
-    }
-    free_Pilha(P);
+    if (res!=0){ //
 
-    P=x;
+        CAux = cParaFechar(c);
+    
+        if (CAux==0)
+            push(P,c);
+        else{
+            if (is_empty(P))
+                res=0;
+            else if (top(P)==CAux)
+                pop(P);
+            else
+                res=0;
+        }
+    } //
+    c=getchar();
 }
 
-Pilha* invertP(Pilha* P){
-/*EX 8. Função que inverte a ordem dos elementos dessa pilha
-Definir adequadamente a estrutura auxiliar e prever a possibilidade da pilha estar vazia. */
-
-if (is_empty(P)!=0)
-    return P;
-
-Pilha* x = ciar_pilha();
-int t;
-    while (!is_empty(P))
-    {
-        t=top(P);
-        push(x,t);
-        pop(P);
-    }
-    return x;
+if (res==0)
+    return 0;
+else if (is_empty(P))
+    return 1;
+else 
+    return 0;
 }
+
+char cParaFechar(char c){
+if (c==')')
+    return '(';
+
+if (c=='}')
+    return '{';
+
+if (c==']')
+    return '[';
+
+return 0;
+}
+
