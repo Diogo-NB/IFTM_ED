@@ -32,7 +32,8 @@ int menor(int* X, int tamanho);
 
 void main(){
     Fila* F = criarFila();
-    
+
+    int i2;
     int C,N,i,x,y;
     int res=0;
     int proxCaixa=0;
@@ -40,27 +41,38 @@ void main(){
 
     int* tCaixas = (int*) malloc(C*sizeof(int)); //quanto esta demorando cada caixa
 
+    if (N>C){
+        
+    for(i=0; i<C; i++)
+        tCaixas[i]=0;
+
     for (i=0; i<N; i++){
         scanf("%d %d",&x,&y);
         push(F,x,y);
     }
-
+    
     for(i=0; i<C; i++){
-        tCaixas[i]=F->top->D;
+        tCaixas[i]= F->top->D;
         pop(F);
     }
+    proxCaixa = menor(tCaixas,C);
 
     while (is_empty(F)!=1){
+
+        //for (i2=0; i2<C; i2++)
+            //printf("%d",tCaixas[i2]);
+        //printf("\n");
+
         x = tCaixas[proxCaixa] - F->top->T;
-      
+
         if (x > 20)
             res++;
         
         tCaixas[proxCaixa] += F->top->D;
-        proxCaixa=menor(tCaixas,C);
+        proxCaixa = menor(tCaixas,C);
         pop(F);
     }
-    
+    }
     printf("%d\n",res);
 }
 
@@ -71,7 +83,7 @@ int menor(int* X, int tamanho){
         if(X[i]<menor){
             menor=X[i];
             res=i;
-            }
+        }
     }
     return res;
 }
